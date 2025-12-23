@@ -10,7 +10,7 @@ void inicio(struct No **ponteiro_inicio, int novo_valor);
 void inserir_final(struct No **ponteiro_inicio, int novo_valor);
 
 int main(){
-    struct No *ponteiro_inicio = NULL;
+    struct No *ponteiro_inicio = NULL; //recebe valor nulo porque atribuimos eles na função
     
     inicio(&ponteiro_inicio, 10);
     inicio(&ponteiro_inicio, 20);
@@ -44,34 +44,44 @@ int main(){
 
 void inicio(struct No **ponteiro_inicio, int novo_valor){
 
-    struct No *novo = malloc(sizeof(struct No)); //criamos um ponteiro para o novo valor que vai ocupar aquele espaço
+    struct No *novo = malloc(sizeof(struct No)); //criamos um novo No
 
     novo -> valor = novo_valor;
-    novo -> proximo = *ponteiro_inicio; //está dizendo que o próximo elemento depois do seu novo nó será aquele que, até agora, era o primeiro da lista
-    //Cada novo elemento vira o primeiro da lista, e o antigo primeiro passa a ser o próximo dele, ou seja, esta indo da direita para a esquerda
-    *ponteiro_inicio = novo;
+    novo -> proximo = *ponteiro_inicio; //"Faça com que o valor novo aponte para o antigo primeiro elemento"
+
+    /*
+    Início: NULL
+    inicio(10): [10] -> NULL                         (novo elemento 10 aponta para o antigo que é NULL)
+    inicio(20): [20] -> [10] -> NULL                 (novo elemento 20 aponta para o antigo que é 10 e o 10 está apontando para o NULL)
+    inicio(30): [30] -> [20] -> [10] -> NULL         (idem)
+    */
+
+    //Cada novo elemento vira o primeiro da lista, e o antigo primeiro passa a ser o próximo dele, ou seja, esta "indo da direita para a esquerda"
+    *ponteiro_inicio = novo; //O novo nó se torna, oficialmente, o primeiro da lista.
 
 }
 
 //Pondo em ordem de chegada
 
 void inserir_final(struct No **ponteiro_inicio, int novo_valor) {
+
     struct No *novo = malloc(sizeof(struct No));
     novo->valor = novo_valor;
-    novo->proximo = NULL;
+    novo->proximo = NULL; //Dessa vez, o ultimo será NULL por definição: [10] -> [20] -> [30] -> NULL (porximo valor sempre pode ser o ultimo) 
+    
+    //O valor já esta criado, ele só não está ligado a nenhuma posição lista (voce criou a "peça" só não encaixou no brinquedo)
 
     //se a lista estiver vazia, o novo nó é o inicio
     if (*ponteiro_inicio == NULL) {
-        *ponteiro_inicio = novo;
+        *ponteiro_inicio = novo; //Se estiver vazia não tem o que percorrer, novo se torna o primeiro
         
     //senão busca o ultimo nó
     } else {
-        struct No *aux = *ponteiro_inicio;
+        struct No *aux = *ponteiro_inicio; //Criamos um "auxiliar" para ir do início da lista
         // Caminha até o último nó
         while (aux->proximo != NULL) {
             aux = aux->proximo;
         }
-        // O último nó agora aponta para o novo
-        aux->proximo = novo;
+        aux->proximo = novo; // O último nó agora aponta para o novo valor
     }
 }
