@@ -8,6 +8,7 @@ struct No{
 
 void organizar(struct No **NoPrincipal, int valor);
 void remover(struct No **NoPrincipal, int ValorExcluir);
+int buscar(struct No *NoPrincipal, int ValorBuscar);
 
 int main(){
     struct No *NoPrincipal = NULL;
@@ -29,6 +30,21 @@ int main(){
     while (printar != NULL){
         printf("\n%d", printar->valor);
         printar = printar->proximo;
+    }
+
+    //Verificamos se o valor existe ou não e printamos
+    if(buscar(NoPrincipal, 20)){ //Passagem de parametro sem  & pos estamos apenas verificando a lista, não alterando
+        printf("\nValor encontrado");
+    }
+    else{
+        printf("\nValor nao encontrado");
+    }
+
+    struct No *aux;
+    while (NoPrincipal != NULL){
+        aux = NoPrincipal;
+        NoPrincipal = NoPrincipal->proximo;
+        free(aux);
     }
 }
 
@@ -85,4 +101,16 @@ void remover(struct No **NoPrincipal, int ValorExcluir){
     }
     
     free(NoAtual);
+}
+
+int buscar(struct No *NoPrincipal, int ValorBuscar){ //Apenas 1 asterisco
+    struct No *BuscarNo = NoPrincipal; //Usando NoPrincipal sem * pos estamos apenas verificando a lista, não alterando
+
+    while (BuscarNo != NULL){
+        if (BuscarNo->valor == ValorBuscar){
+            return 1;
+        }
+        BuscarNo = BuscarNo->proximo;
+    }
+    return 0;
 }
