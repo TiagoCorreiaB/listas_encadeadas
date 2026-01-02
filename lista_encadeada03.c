@@ -44,10 +44,10 @@ int main(){
 
 void inicio(struct No **ponteiro_inicio, int novo_valor){
 
-    struct No *novo = malloc(sizeof(struct No)); //criamos um novo No
+    struct No *NovoNo = malloc(sizeof(struct No)); //criamos um novo No
 
-    novo -> valor = novo_valor;
-    novo -> proximo = *ponteiro_inicio; //"Faça com que o valor novo aponte para o antigo primeiro elemento"
+    NovoNo -> valor = novo_valor;
+    NovoNo -> proximo = *ponteiro_inicio; //"Faça com que o valor novo aponte para o antigo primeiro elemento"
 
     /*
     Início: NULL
@@ -57,7 +57,7 @@ void inicio(struct No **ponteiro_inicio, int novo_valor){
     */
 
     //Cada novo elemento vira o primeiro da lista, e o antigo primeiro passa a ser o próximo dele, ou seja, esta "indo da direita para a esquerda"
-    *ponteiro_inicio = novo; //O novo nó se torna, oficialmente, o primeiro da lista.
+    *ponteiro_inicio = NovoNo; //O novo nó se torna, oficialmente, o primeiro da lista.
 
 }
 
@@ -79,7 +79,7 @@ void inserir_final(struct No **ponteiro_inicio, int novo_valor) {
     } else {
         struct No *aux = *ponteiro_inicio; //Criamos um "auxiliar" para ir do início da lista
         // Caminha até o último nó
-        while (aux->proximo != NULL) {
+        while (aux->proximo != NULL) { //aqui olhamos para o proximo sempre para parar antes de NULL
             aux = aux->proximo;
         }
         aux->proximo = novo; // O último nó agora aponta para o novo valor
