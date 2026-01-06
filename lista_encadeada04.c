@@ -6,31 +6,24 @@ struct No{
     struct No *proximo;
 };
 
-void organizar(struct No **NoPrincipal, int valor);
+void printar(struct No *NoPrincipal);
+void inserirNoFinal(struct No **NoPrincipal, int valor);
 void remover(struct No **NoPrincipal, int ValorExcluir);
 int buscar(struct No *NoPrincipal, int ValorBuscar);
+void adicionarDepoisDe(struct No **NoPrincipal, int ValorAdicionar, int ValorReferencia);
 
 int main(){
     struct No *NoPrincipal = NULL;
-    organizar(&NoPrincipal, 10);
-    organizar(&NoPrincipal, 20);
-    organizar(&NoPrincipal, 30);
+    inserirNoFinal(&NoPrincipal, 10);
+    inserirNoFinal(&NoPrincipal, 20);
+    inserirNoFinal(&NoPrincipal, 30);
 
-    struct No *printar = NoPrincipal;
-    while (printar != NULL){
-        printf("\n%d", printar->valor);
-        printar = printar->proximo;
-    }
+    printar(NoPrincipal);
 
     //vamos remover o 20
     remover(&NoPrincipal, 20);
 
-    printf("\n");
-    printar = NoPrincipal;
-    while (printar != NULL){
-        printf("\n%d", printar->valor);
-        printar = printar->proximo;
-    }
+    printar(NoPrincipal);
 
     //Verificamos se o valor existe ou não e printamos
     if(buscar(NoPrincipal, 20)){ //Passagem de parametro sem  & pos estamos apenas verificando a lista, não alterando
@@ -40,19 +33,41 @@ int main(){
         printf("\nValor nao encontrado");
     }
 
+    adicionarDepoisDe(&NoPrincipal, 20, 10); //Adicionando o 20 novamente, depois do valor 10
+    
+    if(buscar(NoPrincipal, 20)){ //Passagem de parametro sem  & pos estamos apenas verificando a lista, não alterando
+        printf("\nValor encontrado");
+    }
+    else{
+        printf("\nValor nao encontrado");
+    }
+
+    printar(NoPrincipal);
+
     struct No *aux;
     while (NoPrincipal != NULL){
         aux = NoPrincipal;
         NoPrincipal = NoPrincipal->proximo;
         free(aux);
     }
+    return 0;
 }
 
-void organizar(struct No **NoPrincipal, int valor){
+void printar(struct No *NoPrincipal){
+    struct No *print = NoPrincipal;
+    printf("\n");
+    while (print != NULL){
+        printf("\n%d", print->valor);
+        print = print->proximo;
+    }
+}
+
+void inserirNoFinal(struct No **NoPrincipal, int valor){
     struct No *NoLocal = malloc(sizeof(struct No));
 
     if (NoLocal == NULL){
         printf("erro ao alocar");
+        return;
     }
     NoLocal->valor = valor;
     NoLocal->proximo = NULL;
@@ -113,4 +128,28 @@ int buscar(struct No *NoPrincipal, int ValorBuscar){ //Apenas 1 asterisco
         BuscarNo = BuscarNo->proximo;
     }
     return 0;
+}
+
+void adicionarDepoisDe(struct No **NoPrincipal, int ValorAdicionar, int ValorReferencia){
+    if (*NoPrincipal == NULL) return; //Tentou adicionar em lista vazia, num pode
+    
+    struct No *NoAtual = *NoPrincipal;
+
+    while (NoAtual != NULL && NoAtual->valor != ValorReferencia){ //percorre a lista ate o valor anterior ao que queremos adicionar
+        NoAtual = NoAtual->proximo;
+    }
+
+    if (NoAtual == NULL){ //Verificamos se o valor anterior realmente existe
+        return;
+    }
+
+    struct No *NoNovo = malloc(sizeof(struct No)); //Cria o No do valor que queremos adicionar
+    if (NoNovo == NULL){
+        printf("erro ao alocar");
+        return;
+    }
+
+    NoNovo->proximo = NoAtual->proximo; //O novo No vai apontar para onde o anterior apontava 
+    NoNovo->valor = ValorAdicionar;
+    NoAtual->proximo = NoNovo; //O anterior vai apontar para o novo No
 }
