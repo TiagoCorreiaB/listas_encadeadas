@@ -1,4 +1,4 @@
-// Escreva uma função que receba duas estrutura estática como parâmetro contendo informações de alunos, ou
+// Escreva uma função que receba duas estruturas estáticas como parâmetro contendo informações de alunos, ou
 // seja, uma tabela com informações dos alunos da Turma de Estrutura de Dados e da Turma de Linguagem de
 // Programação I, de acordo com a estrutura apresentada abaixo. Após identifique e mostre os alunos que
 // cursam as duas disciplinas.
@@ -9,17 +9,18 @@ char nome[50];
 float media;
 }T_aluno;
 
-void q1(T_aluno sala_estrutura_dados, T_aluno sala_programacao, int qtdEstrutura, int qtdProgramacao){
-    int i = 0, x;
+void q1(T_aluno turmaA[], T_aluno turmaB[], int tamA, int tamB){
 
-    while(i < qtdEstrutura){
+    int i = 0, x;
+    while (i < tamA){
         x = 0;
-        while(x < qtdProgramacao && sala_programacao[x].matricula != sala_estrutura_dados[i].matricula){
-            x++;            
+        while (x < tamB && turmaA[i].matricula != turmaB[x].matricula){
+            x++;
         }
-        if(x < qtdProgramacao){
-            printf("O aluno %s esta em duas turmas", sala_programacao[x].nome);
+        if (x < tamB){
+            printf("o aluno %s esta nas duas materias", turmaB[x].nome);
         }
         i++;
     }
+
 }
